@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Perfil | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f0f8ff;
+      padding-top: 70px;
+    }
+    .container {
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Huellitas Villa</a>
+    <button class="btn btn-light ms-2" onclick="irAInicio()">Inicio</button>
+    <button class="btn btn-light ms-auto" onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+</nav>
+
+<main class="container mt-5">
+  <h2 class="mb-4 text-primary">Mi Perfil</h2>
+  <form id="formPerfil">
+    <div class="mb-3">
+      <label class="form-label">Nombre Completo</label>
+      <input type="text" class="form-control" id="nombre" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Correo Electrónico</label>
+      <input type="email" class="form-control" id="correo" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" id="telefono" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Lugar de Nacimiento</label>
+      <input type="text" class="form-control" id="lugarNacimiento">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fecha de Nacimiento</label>
+      <input type="date" class="form-control" id="fechaNacimiento">
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+  </form>
+
+  <hr class="my-4">
+
+  <h4>Cambiar Contraseña</h4>
+  <form id="formCambioPass">
+    <div class="mb-3">
+      <label class="form-label">Contraseña Actual</label>
+      <input type="password" class="form-control" id="passActual" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Nueva Contraseña</label>
+      <input type="password" class="form-control" id="passNueva" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Actualizar Contraseña</button>
+  </form>
+
+  <div id="mensaje" class="mt-3 text-center"></div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FUNCIONES GENERALES -->
+<script>
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada.");
+    window.location.href = "usuario.html";
+  }
+
+  function irAInicio() {
+    window.location.href = "index.html";
+  }
+</script>
+
+<!-- PERFIL: Cargar datos -->
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const mensaje = document.getElementById("mensaje");
+
+    if (!sesion) {
+      alert("Debes iniciar sesión primero.");
+      window.location.href = "usuario.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/${sesion.usuario}`);
+      if (!res.ok) throw new Error("Usuario no encontrado");
+      const usuario = await res.json();
+
+      // Cargar datos
+      document.getElementById("nombre").value = usuario.nombreCompleto || '';
+      document.getElementById("correo").value = usuario.correo || '';
+      document.getElementById("telefono").value = usuario.telefono || '';
+      document.getElementById("lugarNacimiento").value = usuario.lugarNacimiento || '';
+      document.getElementById("fechaNacimiento").value = usuario.fechaNacimiento || '';
+    } catch (err) {
+      console.error(err);
+      alert("Error al cargar los datos del perfil.");
+    }
+  });
+</script>
+
+<!-- PERFIL: Guardar cambios -->
+<script>
+  document.getElementById("formPerfil").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const mensaje = document.getElementById("mensaje");
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+    const datos = {
+      nombreCompleto: document.getElementById("nombre").value,
+      correo: document.getElementById("correo").value,
+      telefono: document.getElementById("telefono").value,
+      lugarNacimiento: document.getElementById("lugarNacimiento").value,
+      fechaNacimiento: document.getElementById("fechaNacimiento").value
+    };
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/actualizar-por-usuario/${sesion.usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+      });
+
+      const msg = await res.text();
+      mensaje.textContent = msg;
+      mensaje.style.color = "green";
+    } catch (err) {
+      console.error(err);
+      mensaje.textContent = "Error al guardar los cambios.";
+      mensaje.style.color = "red";
+    }
+  });
+</script>
+
+<!-- CONTRASEÑA: Cambiar -->
+<script>
+  document.getElementById("formCambioPass").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const mensaje = document.getElementById("mensaje");
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const actual = document.getElementById("passActual").value;
+    const nueva = document.getElementById("passNueva").value;
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/cambiar-contrasena/${sesion.usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actual, nueva })
+      });
+
+      const texto = await res.text();
+      mensaje.textContent = texto;
+      mensaje.style.color = res.ok ? "green" : "red";
+    } catch (err) {
+      mensaje.textContent = "Error al cambiar la contraseña.";
+      mensaje.style.color = "red";
+    }
+  });
+</script>
+
+</body>
+</html>

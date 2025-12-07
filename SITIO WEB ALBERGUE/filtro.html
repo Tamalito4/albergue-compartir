@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Filtrar Mascotas | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  footer {
+    background-color: #000000;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+  }
+
+  .sidebar {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+
+  .sidebar h4 {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .pet-card {
+    margin-bottom: 30px;
+  }
+
+  .card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .card img {
+    object-fit: cover;
+    height: 200px;
+    transition: transform 0.4s ease;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .card img:hover {
+    transform: scale(1.08);
+    cursor: zoom-in;
+  }
+
+  .card-title {
+    font-weight: 600;
+  }
+
+  .btn {
+    border-radius: 8px;
+  }
+
+  #contenedorMascotas {
+    min-height: 400px;
+  }
+
+  .navbar-brand img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-brand img:hover {
+    transform: scale(1.1);
+  }
+
+  #formAdopcion {
+    max-width: 600px;
+  }
+
+  #formAdopcion .card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  #mensajeAdopcion {
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link active" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="usuario.html">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Contenido principal -->
+<main class="container-fluid">
+  <div class="row">
+    <!-- Filtros -->
+    <div class="col-md-3">
+      <div class="sidebar">
+        <h4>Filtrar Mascotas</h4>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="tipoMascota" id="filtroTodos" value="todos" checked />
+          <label class="form-check-label" for="filtroTodos">Todos</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="radio" name="tipoMascota" id="filtroGatos" value="gato" />
+          <label class="form-check-label" for="filtroGatos">Gatos</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="radio" name="tipoMascota" id="filtroPerros" value="perro" />
+          <label class="form-check-label" for="filtroPerros">Perros</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="col-md-9">
+      <div class="row" id="contenedorMascotas"></div>
+    </div>
+  </div>
+
+  <!-- Formulario de Adopción -->
+  <div id="formAdopcion" class="container my-5" style="display:none;">
+    <h3 class="text-primary mb-4">Solicitud de Adopción</h3>
+    <form id="formAdopcionMascota" class="card p-4 shadow-sm">
+      <div class="mb-3">
+        <label class="form-label">Nombre de la mascota</label>
+        <input type="text" class="form-control" id="mascotaAdoptar" readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Motivo de adopción</label>
+        <textarea class="form-control" id="motivoAdopcion" rows="3" required></textarea>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" onclick="regresarALista()">Cancelar</button>
+        <button type="submit" class="btn btn-success">Enviar Solicitud</button>
+      </div>
+      <div id="mensajeAdopcion" class="mt-3 text-center"></div>
+    </form>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 Huellitas Villa | Todos los derechos reservados</p>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const mascotas = {
+    gato: [
+      { nombre: "Milo", edad: 2, descripcion: "Tranquilo y curioso.", foto: "gato1.avif" },
+      { nombre: "Nina", edad: 3, descripcion: "Muy cariñosa.", foto: "gato2.jpg" },
+      { nombre: "Simba", edad: 1, descripcion: "Juguetón y ágil.", foto: "gato3.jpg" },
+      { nombre: "Luna", edad: 2, descripcion: "Tierna y dormilona.", foto: "gato4.avif" },
+      { nombre: "Tom", edad: 4, descripcion: "Ama los abrazos.", foto: "gato5.jpg" },
+      { nombre: "Zoe", edad: 2, descripcion: "Siempre busca compañía.", foto: "gato6.jpg" },
+    ],
+    perro: [
+      { nombre: "Rocky", edad: 4, descripcion: "Protector y leal.", foto: "perro1.jpg" },
+      { nombre: "Toby", edad: 3, descripcion: "Muy activo.", foto: "perro2.jpg" },
+      { nombre: "Bruno", edad: 2, descripcion: "Inteligente y amistoso.", foto: "perro3.jpg" },
+      { nombre: "Lola", edad: 1, descripcion: "Juguetona y dulce.", foto: "perro4.jpeg" },
+      { nombre: "Max", edad: 5, descripcion: "Fiel compañero.", foto: "perro5.avif" },
+      { nombre: "Bella", edad: 3, descripcion: "Le encanta correr.", foto: "perro6.jpg" },
+    ]
+  };
+
+  let estadoAdopciones = {};
+
+  async function obtenerAdopciones() {
+  try {
+    const res = await fetch("http://localhost:8080/api/adopciones/todas");
+    const lista = await res.json();
+    const estados = {};
+    lista.forEach(a => {
+      if (a.estado === "aprobada") {
+        estados[a.nombre_animal] = "aprobada";
+      } else if (a.estado === "pendiente") {
+        estados[a.nombre_animal] = "pendiente";
+      }
+    });
+    return estados;
+  } catch {
+    return {};
+  }
+}
+
+
+
+  async function mostrarMascotas(tipo) {
+  const contenedor = document.getElementById("contenedorMascotas");
+  contenedor.innerHTML = "";
+
+  let animalesAMostrar = [];
+  if (tipo === "gato") {
+    animalesAMostrar = mascotas.gato;
+  } else if (tipo === "perro") {
+    animalesAMostrar = mascotas.perro;
+  } else {
+    animalesAMostrar = [...mascotas.gato, ...mascotas.perro];
+  }
+
+  const adopciones = await obtenerAdopciones();
+
+  animalesAMostrar.forEach(mascota => {
+    let boton;
+    const estado = adopciones[mascota.nombre];
+
+    if (estado === "aprobada") {
+      boton = `<span class="btn btn-success disabled mt-auto">Adoptado</span>`;
+    } else if (estado === "pendiente") {
+      boton = `<span class="btn btn-warning disabled mt-auto">Solicitud en proceso</span>`;
+    } else {
+      boton = `<button class="btn btn-outline-primary mt-auto" onclick="mostrarFormularioAdopcion('${mascota.nombre}')">Saber más</button>`;
+    }
+
+    const col = document.createElement("div");
+    col.className = "col-md-4 pet-card";
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm">
+        <img src="${mascota.foto}" class="card-img-top" alt="${mascota.nombre}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">${mascota.nombre}</h5>
+          <p class="card-text mb-1"><strong>Edad:</strong> ${mascota.edad} años</p>
+          <p class="card-text">${mascota.descripcion}</p>
+          ${boton}
+        </div>
+      </div>
+    `;
+    contenedor.appendChild(col);
+  });
+}
+
+
+  function mostrarFormularioAdopcion(nombre) {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!sesion || !sesion.usuario) {
+      alert("Debes iniciar sesión para enviar una solicitud.");
+      window.location.href = "usuario.html";
+      return;
+    }
+
+    document.getElementById("contenedorMascotas").style.display = "none";
+    document.getElementById("formAdopcion").style.display = "block";
+    document.getElementById("mascotaAdoptar").value = nombre;
+    document.getElementById("motivoAdopcion").value = "";
+    document.getElementById("mensajeAdopcion").textContent = "";
+  }
+
+  function regresarALista() {
+    document.getElementById("formAdopcion").style.display = "none";
+    document.getElementById("contenedorMascotas").style.display = "flex";
+  }
+
+
+  document.getElementById("formAdopcionMascota").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const mascota = document.getElementById("mascotaAdoptar").value?.trim();
+  const motivo = document.getElementById("motivoAdopcion").value?.trim();
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"))?.usuario;
+  const mensaje = document.getElementById("mensajeAdopcion");
+
+  if (!mascota || !usuario) {
+    mensaje.textContent = "Faltan datos para enviar la solicitud.";
+    mensaje.style.color = "red";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:8080/api/adopciones/solicitar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuario: usuario,
+        nombre_animal: mascota,
+        motivo: motivo || ""
+      })
+    });
+
+    let msg;
+
+    try {
+      // Intenta obtener texto plano
+      msg = await res.text();
+    } catch {
+      msg = "Respuesta del servidor no válida.";
+    }
+
+    if (res.ok) {
+      mensaje.textContent = msg || "Solicitud enviada exitosamente.";
+      mensaje.style.color = "green";
+      setTimeout(() => {
+        regresarALista();
+        mostrarMascotas("todos");
+      }, 2000);
+    } else {
+      mensaje.textContent = msg || "No se pudo enviar la solicitud.";
+      mensaje.style.color = "red";
+    }
+
+  } catch (err) {
+    mensaje.textContent = "Error inesperado al conectar con el servidor.";
+    mensaje.style.color = "red";
+  }
+});
+
+
+
+
+
+
+  // Inicializar
+ window.onload = () => {
+  mostrarMascotas("todos");
+
+  const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  if (sesion && sesion.usuario) {
+    fetch(`http://localhost:8080/api/adopciones/estado/${sesion.usuario}`)
+      .then(res => res.json())
+      .then(solicitudes => {
+        solicitudes.forEach(sol => {
+          if (sol.estado === "aprobada" || sol.estado === "rechazada") {
+            const key = `alerta-${sol.usuario}-${sol.nombre_animal}-${sol.estado}`;
+            if (!localStorage.getItem(key)) {
+              alert(`Tu solicitud para adoptar a ${sol.nombre_animal} fue ${sol.estado.toUpperCase()}.`);
+              localStorage.setItem(key, "mostrada");
+            }
+          }
+        });
+      })
+      .catch(() => {});
+  }
+};
+
+
+</script>
+
+</body>
+</html>
