@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre Nosotros | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    nav.navbar {
+      z-index: 2;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.1);
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 40px 20px;
+    }
+
+    main h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    main p {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link active" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="usuario.html">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Video de fondo -->
+<video class="video-background" autoplay muted loop>
+  <source src="adopcionesm.mp4" type="video/mp4">
+  Tu navegador no soporta la reproducción de video.
+</video>
+
+<!-- Contenido principal -->
+<main>
+  <div>
+    <h1>¿Quiénes Somos?</h1>
+    <p>
+      Somos una organización sin ánimo de lucro dedicada al rescate, cuidado y adopción de animales abandonados. 
+      Creemos en un mundo donde cada peludito tenga una segunda oportunidad, y trabajamos incansablemente 
+      para brindarles amor, salud y un hogar digno. <br><br>
+      <strong>¡Sé parte de esta experiencia y dale una oportunidad a un peludito!</strong> <br>
+      <span style="font-size: 1.5rem;">✨ <strong>¡Adopta ya!</strong> ✨</span>
+    </p>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p class="mb-0">© 2025 Huellitas Villa. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Navbar dinámica y sesión -->
+<script>
+  const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  if (user) {
+    const nav = document.querySelector(".navbar-nav");
+    if (!nav.querySelector('a[href="perfil.html"]')) {
+      const nuevoItem = document.createElement("li");
+      nuevoItem.className = "nav-item";
+      nuevoItem.innerHTML = `<a class="nav-link" href="perfil.html">Mi Perfil</a>`;
+      nav.appendChild(nuevoItem);
+    }
+    const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+    if (loginItem) loginItem.remove();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (sesion && sesion.usuario) {
+      const nav = document.querySelector(".navbar-nav");
+      if (!document.getElementById("info-sesion")) {
+        const item = document.createElement("li");
+        item.className = "nav-item";
+        item.id = "info-sesion";
+        item.innerHTML = `
+          <span class="nav-link text-white">
+            Logueado como <strong>${sesion.usuario}</strong>
+            <button class="btn btn-sm btn-outline-light ms-2" onclick="cerrarSesion()">Cerrar sesión</button>
+          </span>
+        `;
+        nav.appendChild(item);
+      }
+    }
+  });
+
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada");
+    window.location.href = "usuario.html";
+  }
+</script>
+
+</body>
+</html>
