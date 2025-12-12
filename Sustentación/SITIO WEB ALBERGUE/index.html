@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 80px; 
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .bienvenida {
+      background: linear-gradient(to right, #6fb1fc, #4364f7);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      margin-bottom: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .zoom-img {
+      transition: transform 0.4s ease;
+    }
+
+    .zoom-img:hover {
+      transform: scale(1.08);
+      cursor: zoom-in;
+    }
+
+    .animal-img {
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .btn-vermas {
+      display: block;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      padding: 6px 14px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      top: 50%;
+      width: 5%;
+      transform: translateY(-50%);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.1);
+    }
+
+    .nav-text {
+      color: #fff;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="campaña.html">Campaña</a></li>
+        <li class="nav-item"><a class="nav-link" href="usuario.html">Login</a></li>
+      </ul>
+
+
+  <!-- Java Script -->
+
+<script>
+  const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  if (user) {
+    const nav = document.querySelector(".navbar-nav");
+
+    nav.innerHTML += `
+      <li class="nav-item nav-text">Logueado como ${user.usuario}</li>
+      <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+    `;
+
+    const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+    if (loginItem) loginItem.remove();
+  }
+</script>
+
+    </div>
+  </div>
+</nav>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main>
+  <section class="bienvenida">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Bienvenido a Huellitas Villa</h1>
+      <p class="lead">
+        Dedicados al rescate, cuidado y adopción de perros y gatos abandonados.
+        Ayúdanos a cambiar vidas peludas con amor, cuidado y un nuevo hogar.
+      </p>
+    </div>
+  </section>
+
+  <!-- Carrusel -->
+  <div class="container mb-5">
+    <h2 class="text-center mb-4">Conoce a Nuestros Animalitos</h2>
+
+    <div id="carruselAnimales" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="row">
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="gato4.avif" class="card-img-top zoom-img animal-img" alt="Luna">
+                <div class="card-body">
+                  <h5 class="card-title">Luna</h5>
+                  <p class="card-text">Perrita juguetona y cariñosa.</p>
+                  <a href="detalleAnimal.html?nombre=Luna" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="gato1.avif" class="card-img-top zoom-img animal-img" alt="Milo">
+                <div class="card-body">
+                  <h5 class="card-title">Milo</h5>
+                  <p class="card-text">Gato curioso y tranquilo.</p>
+                  <a href="detalleAnimal.html?nombre=Milo" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="perro1.jpg" class="card-img-top zoom-img animal-img" alt="Rocky">
+                <div class="card-body">
+                  <h5 class="card-title">Rocky</h5>
+                  <p class="card-text">Perrito fiel y protector.</p>
+                  <a href="detalleAnimal.html?nombre=Rocky" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="row">
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="gato6.jpg" class="card-img-top zoom-img animal-img" alt="Zoe">
+                <div class="card-body">
+                  <h5 class="card-title">Zoe</h5>
+                  <p class="card-text">Gatita muy sociable y cariñosa.</p>
+                  <a href="detalleAnimal.html?nombre=Zoe" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="perro5.avif" class="card-img-top zoom-img animal-img" alt="Max">
+                <div class="card-body">
+                  <h5 class="card-title">Max</h5>
+                  <p class="card-text">Amigable y lleno de energía.</p>
+                  <a href="detalleAnimal.html?nombre=Max" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <img src="gato3.jpg" class="card-img-top zoom-img animal-img" alt="Simba">
+                <div class="card-body">
+                  <h5 class="card-title">Simba</h5>
+                  <p class="card-text">Pequeño explorador curioso.</p>
+                  <a href="detalleAnimal.html?nombre=Simba" class="btn btn-primary btn-vermas">Ver más</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carruselAnimales" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#carruselAnimales" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-auto">
+  <p>&copy; 2025 Huellitas Villa | Todos los derechos reservados</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

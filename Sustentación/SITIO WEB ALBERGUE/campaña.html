@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campañas | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #6fb1fc, #4364f7);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding-top: 90px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .campanias-section {
+      flex: 1;
+      padding: 60px 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .campania-card {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 380px;
+    }
+
+    .campania-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.22);
+    }
+
+    .campania-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .campania-card:hover .campania-img {
+      transform: scale(1.05);
+    }
+
+    /* Estilo para las descripciones cortas */
+    .descripcion-corta {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #555 !important;
+      font-family: 'Segoe UI', sans-serif;
+      margin-top: 6px;
+    }
+
+    #campaniaImg {
+      width: 100%;
+      max-width: 450px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 0 12px rgba(0,0,0,0.25);
+    }
+
+    .modal-content {
+      background-color: #f8f9fa;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .nav-text {
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas">
+      <span>Huellitas Villa</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavCamp">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavCamp">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link active" href="campaña.html">Campaña</a></li>
+
+        <li class="nav-item" id="loginItem"><a class="nav-link" href="usuario.html">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTENIDO -->
+<main>
+  <section class="campanias-section">
+    <h1 class="fw-bold mb-4">Nuestras Campañas</h1>
+    <p class="mb-5 fs-5">Apoya nuestras campañas activas y ayuda a mejorar la vida de los animales.</p>
+
+    <div class="container">
+      <div class="row">
+
+        <!-- TARJETA 1 -->
+        <div class="col-md-4">
+          <div class="campania-card" onclick="mostrarDetalles(1)">
+            <img src="esterilizacion.jpg" class="campania-img">
+            <h5 class="mt-2 text-primary fw-bold">Campaña de Esterilización</h5>
+            <p id="desc1" class="descripcion-corta"></p>
+          </div>
+        </div>
+
+        <!-- TARJETA 2 -->
+        <div class="col-md-4">
+          <div class="campania-card" onclick="mostrarDetalles(2)">
+            <img src="donac_alimento.jpg" class="campania-img">
+            <h5 class="mt-2 text-primary fw-bold">Donación de Alimento</h5>
+            <p id="desc2" class="descripcion-corta"></p>
+          </div>
+        </div>
+
+        <!-- TARJETA 3 -->
+        <div class="col-md-4">
+          <div class="campania-card" onclick="mostrarDetalles(3)">
+            <img src="rescate.jpeg" class="campania-img">
+            <h5 class="mt-2 text-primary fw-bold">Campaña de Rescate</h5>
+            <p id="desc3" class="descripcion-corta"></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL -->
+<div class="modal fade" id="modalCampania" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de la Campaña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img id="campaniaImg" alt="Imagen de campaña">
+
+        <p id="descripcionImg" class="text-muted mt-2"></p>
+
+        <h5 id="campaniaTitulo" class="mt-3"></h5>
+        <p id="campaniaDescripcion"></p>
+
+        <p><strong>Fecha de Inicio:</strong> <span id="fechaInicio"></span></p>
+        <p><strong>Fecha de Fin:</strong> <span id="fechaFin"></span></p>
+        <p><strong>Horario:</strong> <span id="horario"></span></p>
+        <p><strong>Lugar:</strong> <span id="lugar"></span></p>
+
+        <div id="mapaCampania" class="mapa mt-3"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white text-center p-3 mt-auto">
+  © 2025 Huellitas Villa. Todos los derechos reservados.
+</footer>
+
+<!-- Java Script -->
+ 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const campañas = {
+    1: {
+      titulo: "Campaña de Esterilización",
+      img: "esterilizacion.jpg",
+      descripcionImg: "Veterinarios realizando esterilización segura y humanitaria.",
+      descripcionCorta: "Esterilización gratuita para mascotas vulnerables.",
+      descripcion: "Jornada gratuita de esterilización para animales vulnerables.",
+      fechaInicio: "15/02/2025",
+      fechaFin: "15/03/2025",
+      horario: "8:00 AM - 4:00 PM",
+      lugar: "Centro Comunitario Villa del Rosario",
+      lat: 4.5711,
+      lon: -74.1062
+    },
+    2: {
+      titulo: "Donación de Alimento",
+      img: "donac_alimento.jpg",
+      descripcionImg: "Alimento recolectado para perros y gatos en situación de calle.",
+      descripcionCorta: "Apoyo alimenticio para animales en condición vulnerable.",
+      descripcion: "Recolección y entrega de alimentos para animales necesitados.",
+      fechaInicio: "10/03/2025",
+      fechaFin: "20/03/2025",
+      horario: "9:00 AM - 5:00 PM",
+      lugar: "Parque Principal Villa del Rosario",
+      lat: 4.5602,
+      lon: -74.1005
+    },
+    3: {
+      titulo: "Campaña de Rescate",
+      img: "rescate.jpeg",
+      descripcionImg: "Voluntarios rescatando animales en zonas rurales y urbanas.",
+      descripcionCorta: "Rescate de animales en riesgo en diferentes zonas.",
+      descripcion: "Ayuda a rescatar animales en situaciones de riesgo.",
+      fechaInicio: "20/04/2025",
+      fechaFin: "25/04/2025",
+      horario: "7:30 AM",
+      lugar: "Punto de Encuentro: Huellitas Villa",
+      lat: 4.5586,
+      lon: -74.105
+    }
+  };
+
+  function mostrarDetalles(id) {
+    const c = campañas[id];
+
+    document.getElementById("campaniaImg").src = c.img;
+    document.getElementById("descripcionImg").textContent = c.descripcionImg;
+    document.getElementById("campaniaTitulo").textContent = c.titulo;
+    document.getElementById("campaniaDescripcion").textContent = c.descripcion;
+    document.getElementById("fechaInicio").textContent = c.fechaInicio;
+    document.getElementById("fechaFin").textContent = c.fechaFin;
+    document.getElementById("horario").textContent = c.horario;
+    document.getElementById("lugar").textContent = c.lugar;
+
+    document.getElementById("mapaCampania").innerHTML = `
+      <iframe width="100%" height="300"
+        src="https://maps.google.com/maps?q=${c.lat},${c.lon}&z=15&output=embed"></iframe>`;
+
+    new bootstrap.Modal(document.getElementById("modalCampania")).show();
+  }
+
+  // Colocar descripciones cortas
+  (function cargarDescripcionesCortas() {
+    document.getElementById("desc1").textContent = campañas[1].descripcionCorta;
+    document.getElementById("desc2").textContent = campañas[2].descripcionCorta;
+    document.getElementById("desc3").textContent = campañas[3].descripcionCorta;
+  })();
+
+  // Estado de usuario
+  (function insertarEstadoNav() {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!sesion) return;
+
+    const nav = document.querySelector(".navbar-nav");
+    if (!nav) return;
+
+    const existe = nav.querySelector('.nav-text-profile');
+    if (!existe) {
+
+      const liTexto = document.createElement("li");
+      liTexto.className = "nav-item nav-text nav-text-profile";
+      liTexto.textContent = `Logueado como ${sesion.usuario}`;
+      nav.appendChild(liTexto);
+
+      const liPerfil = document.createElement("li");
+      liPerfil.className = "nav-item";
+      liPerfil.innerHTML = `<a class="nav-link" href="perfil.html">Mi Perfil</a>`;
+      nav.appendChild(liPerfil);
+
+      const loginItem = document.getElementById("loginItem");
+      if (loginItem) loginItem.style.display = "none";
+    }
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Perfil | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f8ff;
+      padding-top: 90px; 
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container-max {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .bienvenida-perfil {
+      background: linear-gradient(to right, #6fb1fc, #4364f7);
+      color: white;
+      text-align: center;
+      padding: 15px 15px;
+      margin: 20px auto 35px auto;
+      border-radius: 12px;
+      box-shadow: 0 0 22px rgba(0,0,0,0.18);
+      max-width: 900px;
+    }
+
+    .bienvenida-perfil h2 {
+      font-weight: 600;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    main.container {
+      flex: 1;
+      max-width: 800px;
+      background: white;
+      padding: 40px;
+      border-radius: 18px;
+      margin: 0 auto 40px auto;
+      box-shadow: 0 0 22px rgba(0,0,0,0.18);
+    }
+
+    .perfil-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 4px solid #0d6efd;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      transition: transform .3s ease;
+    }
+
+    .perfil-img:hover {
+      transform: scale(1.05);
+    }
+
+    .img-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .nav-text {
+      color: #fff;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      main.container {
+        padding: 20px;
+        margin: 15px;
+      }
+      .bienvenida-perfil {
+        margin: 15px;
+        padding: 30px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas" style="height:40px;width:40px;object-fit:cover;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavPerfil">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavPerfil">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <!-- AGREGADO: Campañas -->
+        <li class="nav-item"><a class="nav-link" href="campaña.html">Campañas</a></li>
+        <!-- En caso de no iniciar sesión, mostrar Login -->
+        <li class="nav-item"><a class="nav-link active" href="usuario.html">Login</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center ms-3">
+        <!-- Botón Cerrar Sesión (si se desea mantener como en segundo perfil) se mostrará en la inyección de JS cuando exista sesión -->
+        <button id="btnCerrarNav" class="btn btn-light" style="display:none;" onclick="cerrarSesion()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="bienvenida-perfil">
+  <h2>Mi Perfil</h2>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="container mt-4">
+  <!-- Imagen de perfil (nuevo) -->
+  <div class="img-container">
+    <img id="fotoPerfil" class="perfil-img" src="https://i.imgur.com/4ZQZ4fT.png" alt="Foto de perfil">
+
+    <div class="mt-3">
+      <input type="file" id="inputFoto" accept="image/*" class="form-control w-50 mx-auto">
+      <button class="btn btn-primary mt-2" onclick="guardarFoto()">Guardar Foto</button>
+    </div>
+  </div>
+
+  <!-- FORMULARIO PRINCIPAL-->
+  <form id="formPerfil">
+    <div class="mb-3">
+      <label class="form-label">Nombre Completo</label>
+      <input type="text" class="form-control" id="nombre" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Correo Electrónico</label>
+      <input type="email" class="form-control" id="correo" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" id="telefono" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Lugar de Nacimiento</label>
+      <input type="text" class="form-control" id="lugarNacimiento">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fecha de Nacimiento</label>
+      <input type="date" class="form-control" id="fechaNacimiento">
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+  </form>
+
+  <hr class="my-4">
+
+  <h4>Cambiar Contraseña</h4>
+  <form id="formCambioPass">
+    <div class="mb-3">
+      <label class="form-label">Contraseña Actual</label>
+      <input type="password" class="form-control" id="passActual" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Nueva Contraseña</label>
+      <input type="password" class="form-control" id="passNueva" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Actualizar Contraseña</button>
+  </form>
+
+  <div id="mensaje" class="mt-3 text-center"></div>
+</main>
+
+<footer class="bg-dark text-center text-white mt-5 p-3">
+  © 2025 Huellitas Villa — Todos los derechos reservados.
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FUNCIONES GENERALES (mantener tal cual el primer perfil.html) -->
+<script>
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada.");
+    window.location.href = "usuario.html";
+  }
+
+  function irAInicio() {
+    window.location.href = "index.html";
+  }
+</script>
+
+<script>
+  (function insertarEstadoNav() {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!sesion) return;
+
+    // Encontrar la lista de navegación
+    const nav = document.querySelector(".navbar-nav");
+    if (!nav) return;
+
+    // Evitar duplicados si ya están
+    const existing = nav.querySelector('.nav-text-profile');
+    if (!existing) {
+      const liTexto = document.createElement('li');
+      liTexto.className = 'nav-item nav-text nav-text-profile';
+      liTexto.innerHTML = `Logueado como ${sesion.usuario}`;
+      nav.appendChild(liTexto);
+
+      const liPerfil = document.createElement('li');
+      liPerfil.className = 'nav-item';
+      liPerfil.innerHTML = `<a class="nav-link" href="perfil.html">Mi Perfil</a>`;
+      nav.appendChild(liPerfil);
+
+      const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+      if (loginItem) loginItem.remove();
+
+      const btnCerrarNav = document.getElementById('btnCerrarNav');
+      if (btnCerrarNav) btnCerrarNav.style.display = 'inline-block';
+    }
+  })();
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const mensaje = document.getElementById("mensaje");
+
+    if (!sesion) {
+      alert("Debes iniciar sesión primero.");
+      window.location.href = "usuario.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/${sesion.usuario}`);
+      if (!res.ok) throw new Error("Usuario no encontrado");
+      const usuario = await res.json();
+
+      // Cargar datos en el formulario
+      document.getElementById("nombre").value = usuario.nombreCompleto || '';
+      document.getElementById("correo").value = usuario.correo || '';
+      document.getElementById("telefono").value = usuario.telefono || '';
+      document.getElementById("lugarNacimiento").value = usuario.lugarNacimiento || '';
+      document.getElementById("fechaNacimiento").value = usuario.fechaNacimiento || '';
+
+      // Cargar foto de perfil desde localStorage si existe
+      const fotoGuardada = localStorage.getItem(`fotoPerfil_${sesion.usuario}`);
+      if (fotoGuardada) {
+        document.getElementById("fotoPerfil").src = fotoGuardada;
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error al cargar los datos del perfil.");
+    }
+  });
+</script>
+
+<!-- PERFIL: Guardar cambios-->
+<script>
+  document.getElementById("formPerfil").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const mensaje = document.getElementById("mensaje");
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+    const datos = {
+      nombreCompleto: document.getElementById("nombre").value,
+      correo: document.getElementById("correo").value,
+      telefono: document.getElementById("telefono").value,
+      lugarNacimiento: document.getElementById("lugarNacimiento").value,
+      fechaNacimiento: document.getElementById("fechaNacimiento").value
+    };
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/actualizar-por-usuario/${sesion.usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+      });
+
+      const msg = await res.text();
+      mensaje.textContent = msg;
+      mensaje.style.color = "green";
+    } catch (err) {
+      console.error(err);
+      mensaje.textContent = "Error al guardar los cambios.";
+      mensaje.style.color = "red";
+    }
+  });
+</script>
+
+<script>
+  document.getElementById("formCambioPass").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const mensaje = document.getElementById("mensaje");
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const actual = document.getElementById("passActual").value;
+    const nueva = document.getElementById("passNueva").value;
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/usuarios/cambiar-contrasena/${sesion.usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actual, nueva })
+      });
+
+      const texto = await res.text();
+      mensaje.textContent = texto;
+      mensaje.style.color = res.ok ? "green" : "red";
+    } catch (err) {
+      mensaje.textContent = "Error al cambiar la contraseña.";
+      mensaje.style.color = "red";
+    }
+  });
+</script>
+
+<!--Guardar y cargar foto de perfil en localStorage-->
+<script>
+  function guardarFoto() {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!sesion) {
+      alert("Debes iniciar sesión para guardar la foto.");
+      return;
+    }
+
+    const archivo = document.getElementById("inputFoto").files[0];
+
+    if (!archivo) {
+      alert("Selecciona una imagen primero.");
+      return;
+    }
+
+    const lector = new FileReader();
+    lector.onload = function (e) {
+      const base64 = e.target.result;
+      localStorage.setItem(`fotoPerfil_${sesion.usuario}`, base64);
+      document.getElementById("fotoPerfil").src = base64;
+      alert("Foto guardada con éxito.");
+    };
+
+    lector.readAsDataURL(archivo);
+  }
+</script>
+
+</body>
+</html>
+</html>

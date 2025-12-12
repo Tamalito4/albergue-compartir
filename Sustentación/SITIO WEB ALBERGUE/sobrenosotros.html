@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre Nosotros | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    nav.navbar {
+      z-index: 10;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.1);
+    }
+
+    .nav-text {
+      color: #fff !important;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      font-weight: normal !important;
+    }
+
+    /* VIDEO DE FONDO */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.55);
+      padding: 140px 20px 40px;
+      overflow-y: auto;
+    }
+
+    .contenedor-sobre {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .seccion {
+      margin-bottom: 45px;
+    }
+
+    /* TARJETAS */
+    .info-card {
+      background: rgba(0,0,0,0.55);
+      border-radius: 15px;
+      padding: 30px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+    }
+
+    .info-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0d6efd;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    }
+
+    .info-text {
+      font-size: 1.15rem;
+      color: #dce9ff !important;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    footer {
+      position: relative;
+      z-index: 5;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo">
+      <span>Huellitas Villa</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link active" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="campaña.html">Campaña</a></li>
+        <li class="nav-item" id="loginItem"><a class="nav-link" href="usuario.html">Login</a></li>
+
+      </ul>
+
+      <script>
+        const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+        if (user) {
+          const nav = document.querySelector(".navbar-nav");
+
+          nav.innerHTML += `
+            <li class="nav-item nav-text">Logueado como ${user.usuario}</li>
+            <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+          `;
+
+          const loginItem = nav.querySelector("#loginItem");
+          if (loginItem) loginItem.remove();
+        }
+      </script>
+
+    </div>
+  </div>
+</nav>
+
+<!-- VIDEO FONDO -->
+<video class="video-background" autoplay muted loop playsinline preload="auto">
+  <source src="adopciones2.mp4" type="video/mp4">
+</video>
+
+<!-- CONTENIDO -->
+<main>
+  <div class="contenedor-sobre">
+
+    <!-- QUIÉNES SOMOS EN TARJETA -->
+    <section class="seccion">
+      <div class="info-card">
+        <h2 class="info-title">¿Quiénes Somos?</h2>
+        <p class="info-text">
+          Somos una organización sin ánimo de lucro dedicada al rescate, rehabilitación, cuidado y adopción de animales
+          abandonados. Nuestro propósito es brindar una segunda oportunidad a cada peludito que ha sufrido maltrato,
+          abandono o condiciones de vulnerabilidad.  
+          <br><br>
+          Trabajamos con amor, compromiso y responsabilidad para asegurar que cada animal reciba la atención necesaria,
+          incluyendo cuidados veterinarios, alimentación, esterilización y acompañamiento emocional.  
+          <br><br>
+          <strong>Creemos en un mundo donde todos los animales merecen respeto, protección y un hogar lleno de cariño.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- MISIÓN -->
+    <section class="seccion">
+      <div class="info-card">
+        <h2 class="info-title">Misión</h2>
+        <p class="info-text">
+          Nuestra misión es rescatar animales en situaciones de riesgo, brindarles atención médica, rehabilitación física 
+          y apoyo emocional. Trabajamos para promover la adopción responsable, educar a la comunidad sobre el respeto y 
+          bienestar animal, y fomentar campañas de esterilización para disminuir el abandono.  
+          <br><br>
+          Aspiramos a crear una sociedad más empática, donde cada persona comprenda que adoptar es un acto de amor que
+          transforma vidas.
+        </p>
+      </div>
+    </section>
+
+    <!-- VISIÓN -->
+    <section class="seccion">
+      <div class="info-card">
+        <h2 class="info-title">Visión</h2>
+        <p class="info-text">
+          Nuestra visión es convertirnos en un refugio modelo a nivel regional, reconocido por nuestra dedicación,
+          transparencia y compromiso con el bienestar animal.  
+          <br><br>
+          Soñamos con un futuro donde ningún animal viva en las calles, donde las adopciones responsables sean una práctica
+          común y donde la comunidad participe activamente en la construcción de un entorno seguro y digno para todos los
+          animales.  
+          <br><br>
+          <strong>Aspiramos a un mundo donde ningún peludito sufra abandono jamás.</strong>
+        </p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p class="mb-0">© 2025 Huellitas Villa. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- Java Script -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    window.location.href = "usuario.html";
+  }
+</script>
+
+</body>
+</html>

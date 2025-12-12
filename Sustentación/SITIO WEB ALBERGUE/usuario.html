@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+  body {
+    background: linear-gradient(135deg, #6fb1fc, #4364f7);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .login-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 60px;
+  }
+
+  .card-container {
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.6s ease;
+  }
+
+  .card h2 {
+    color: #0d6efd;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .toggle-link {
+    color: #0d6efd;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: underline;
+  }
+
+  #mensaje-error,
+  #mensaje-registro {
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .login-logo {
+    width: 120px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+  }
+
+  .navbar-brand img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-brand img:hover {
+    transform: scale(1.1);
+  }
+
+  .nav-text {
+    color: #fff;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  </style>
+
+</head>
+<body>
+<div id="estadoSesion" class="container mt-5 text-center" style="display: none;"></div>
+
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Logo Huellitas">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="campaña.html">Campaña</a></li>
+        <li class="nav-item"><a class="nav-link active" href="usuario.html">Login</a></li>
+      </ul>
+<script>
+  const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  if (user) {
+    const nav = document.querySelector(".navbar-nav");
+    nav.innerHTML += `
+      <li class="nav-item nav-text">Logueado como ${user.usuario}</li>
+      <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+    `;
+    const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+    if (loginItem) loginItem.remove();
+  }
+</script>
+
+    </div>
+  </div>
+</nav>
+
+<!-- CONTENIDO -->
+<div class="login-wrapper">
+  <div class="card-container">
+
+    <!-- LOGIN -->
+    <div class="card" id="login-card">
+<img src="adopciones.jpg" alt="Logo Adopciones" class="login-logo mx-auto d-block">
+      <h2>Iniciar Sesión</h2>
+      <form id="formLogin">
+        <input type="text" class="form-control mb-3" id="loginUsuario" placeholder="Usuario" required>
+        <input type="password" class="form-control mb-3" id="loginPass" placeholder="Contraseña" required>
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        <div id="mensaje-error" class="text-danger"></div>
+	
+      </form>
+      <span class="toggle-link" onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</span>
+    </div>
+
+    <!-- REGISTRO -->
+    <div class="card" id="registro-card" style="display:none;">
+      <h2>Registro</h2>
+      <form id="formRegistro">
+        <input type="text" class="form-control mb-2" id="nombre" placeholder="Nombre Completo" required>
+        <input type="text" class="form-control mb-2" id="lugarNacimiento" placeholder="Lugar de Nacimiento" required>
+        <div class="row mb-2">
+          <div class="col-4"><input type="number" class="form-control" placeholder="Día" min="1" max="31" required></div>
+          <div class="col-4"><input type="number" class="form-control" placeholder="Mes" min="1" max="12" required></div>
+          <div class="col-4"><input type="number" class="form-control" placeholder="Año" min="1900" max="2025" required></div>
+        </div>
+        <input type="email" class="form-control mb-2" id="correo" placeholder="Correo Electrónico" required>
+        <input type="tel" class="form-control mb-2" id="telefono" placeholder="Teléfono" required>
+        <input type="text" class="form-control mb-2" id="usuarioNuevo" placeholder="Usuario" required>
+        <input type="password" class="form-control mb-2" id="passNuevo" placeholder="Contraseña" required>
+        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+        <div id="mensaje-registro" class="text-success"></div>
+      </form>
+      <span class="toggle-link" onclick="mostrarLogin()">¿Ya tienes cuenta? Inicia sesión</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p class="mb-0">© 2025 Huellitas Villa. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  const loginCard = document.getElementById("login-card");
+  const registroCard = document.getElementById("registro-card");
+  const mensajeError = document.getElementById("mensaje-error");
+  const mensajeRegistro = document.getElementById("mensaje-registro");
+
+  function mostrarRegistro() {
+    loginCard.style.display = "none";
+    registroCard.style.display = "block";
+  }
+
+  function mostrarLogin() {
+    registroCard.style.display = "none";
+    loginCard.style.display = "block";
+  }
+
+  // LOGIN
+let intentosFallidos = 0;
+let bloqueoActivo = false;
+
+document.getElementById("formLogin").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  mensajeError.textContent = "";
+
+  if (bloqueoActivo) return;
+
+  const usuario = document.getElementById("loginUsuario").value;
+  const contrasena = document.getElementById("loginPass").value;
+
+  try {
+    const res = await fetch("http://localhost:8080/api/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuario, contrasena })
+    });
+
+    const result = await res.json();
+
+    if (result.status === "ok") {
+      intentosFallidos = 0;
+
+      localStorage.setItem("usuarioLogueado", JSON.stringify({
+        usuario: usuario,
+        rol: result.rol
+      }));
+
+      if (result.rol === "ADMIN") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    } else {
+      intentosFallidos++;
+      mensajeError.textContent = result.message || "Credenciales incorrectas.";
+
+      if (intentosFallidos >= 3) {
+        mensajeError.textContent = "Demasiados intentos. Intenta en 15 segundos.";
+        bloqueoActivo = true;
+
+        let segundos = 15;
+        const cuenta = setInterval(() => {
+          mensajeError.textContent = `Demasiados intentos. Espera ${segundos} segundos...`;
+          segundos--;
+          if (segundos < 0) {
+            clearInterval(cuenta);
+            bloqueoActivo = false;
+            intentosFallidos = 0;
+            mensajeError.textContent = "";
+          }
+        }, 1000);
+      }
+    }
+  } catch (err) {
+    mensajeError.textContent = "Error al conectar con el servidor.";
+  }
+});
+
+
+  // REGISTRO
+  document.getElementById("formRegistro").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    mensajeRegistro.textContent = "";
+
+    const nombreCompleto = document.getElementById("nombre").value;
+    const lugarNacimiento = document.getElementById("lugarNacimiento").value;
+    const dia = document.querySelector('input[placeholder="Día"]').value;
+    const mes = document.querySelector('input[placeholder="Mes"]').value;
+    const anio = document.querySelector('input[placeholder="Año"]').value;
+    const fechaNacimiento = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+    const correo = document.getElementById("correo").value;
+    const telefono = document.getElementById("telefono").value;
+    const usuario = document.getElementById("usuarioNuevo").value;
+    const contrasena = document.getElementById("passNuevo").value;
+
+    const data = {
+      nombreCompleto,
+      lugarNacimiento,
+      fechaNacimiento,
+      correo,
+      telefono,
+      usuario,
+      contrasena
+    };
+
+    try {
+      const res = await fetch("http://localhost:8080/api/usuarios/registro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.status === "ok") {
+        mensajeRegistro.style.color = "green";
+        mensajeRegistro.textContent = result.message;
+        mostrarLogin();
+      } else {
+        mensajeRegistro.style.color = "red";
+        mensajeRegistro.textContent = result.message || "Error al registrar.";
+      }
+    } catch (err) {
+      mensajeRegistro.style.color = "red";
+      mensajeRegistro.textContent = "Error al conectar con el servidor.";
+    }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada");
+    window.location.href = "usuario.html";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const loginWrapper = document.querySelector(".login-wrapper");
+    const estadoSesion = document.getElementById("estadoSesion");
+
+    if (sesion && sesion.usuario) {
+      loginWrapper.style.display = "none";
+      estadoSesion.style.display = "block";
+      estadoSesion.innerHTML = `
+        <h3>Ya estás logueado como ${sesion.usuario}</h3>
+        <button class="btn btn-danger mt-3" onclick="cerrarSesion()">Cerrar sesión</button>
+      `;
+    }
+  });
+</script>
+</body>
+</html>
