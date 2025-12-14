@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Animal | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .detalle-container {
+      margin-top: 40px;
+    }
+
+    .detalle-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-volver {
+      margin-top: 30px;
+    }
+
+    #animalNombre {
+      background-color: #e9ecef;
+      padding: 10px 15px;
+      border-left: 6px solid #4364f7;
+      border-bottom: 1px solid #ccc;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="huellitas.avif" alt="Huellitas Logo" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
+        <span>Huellitas Villa</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+          <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+          <li class="nav-item"><a class="nav-link" href="donaciones.html">Donaciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="usuario.html">Login</a></li>
+        </ul>
+        <script>
+          const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+          if (user) {
+            const nav = document.querySelector(".navbar-nav");
+            nav.innerHTML += `<li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>`;
+            const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+            if (loginItem) loginItem.remove();
+          }
+        </script>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido -->
+  <main class="container detalle-container">
+    <div class="row">
+      <div class="col-md-6">
+        <img id="animalFoto" src="" alt="Foto del Animal" class="detalle-img">
+      </div>
+      <div class="col-md-6">
+        <h2 id="animalNombre"></h2>
+        <p class="text-muted" id="animalEdad"></p>
+        <p id="animalDescripcion"></p>
+        <p id="estadoAdopcion" class="fw-bold"></p>
+        <a href="index.html" class="btn btn-secondary btn-volver">Volver al Inicio</a>
+      </div>
+    </div>
+  </main>
+
+ <footer style="background-color: #000000; color: #ffffff; text-align: center; padding: 20px; margin-top: auto;">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2025 Huellitas Villa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const animales = {
+      Luna: {
+        nombre: "Luna",
+        edad: "2 años",
+        descripcion: "Luna es una gatica de tamaño mediano, sumamente juguetona y sociable. Fue rescatada de la calle donde vivía en condiciones precarias. Tiene un temperamento dulce, le encanta correr tras pelotas y dar besos. Se lleva bien con niños y otros perros. Está vacunada, esterilizada y lista para un hogar lleno de amor.",
+        foto: "gato4.avif"
+      },
+      Milo: {
+        nombre: "Milo",
+        edad: "2 años",
+        descripcion: "Milo es un gato macho de pelaje gris claro, extremadamente limpio y observador. Le gusta descansar en lugares altos y seguirte por la casa. Es ideal para un hogar tranquilo. Se adapta rápido y es independiente, pero también disfruta de las caricias. Está desparasitado y con control veterinario al día.",
+        foto: "gato1.avif"
+      },
+      Rocky: {
+        nombre: "Rocky",
+        edad: "4 años",
+        descripcion: "Rocky es un pastor criollo fuerte y leal. Fue abandonado cerca de una finca y rescatado por nuestros voluntarios. Es un guardián nato, ideal para proteger tu hogar. A pesar de su porte, es muy cariñoso con quienes se ganan su confianza. Necesita espacio para correr y alguien que disfrute del aire libre.",
+        foto: "perro1.jpg"
+      },
+      Zoe: {
+        nombre: "Zoe",
+        edad: "3 años",
+        descripcion: "Zoe es una gatita de ojos verdes grandes y pelaje suave. Es extremadamente sociable, ronronea con facilidad y le gusta dormir junto a ti. Fue rescatada con sus crías, y ahora que ya fueron adoptados, espera una nueva oportunidad. Perfecta para apartamentos y hogares tranquilos.",
+        foto: "gato6.jpg"
+      },
+      Max: {
+        nombre: "Max",
+        edad: "5 años",
+        descripcion: "Max es un perrito muy activo, de tamaño grande. Le encanta correr, jugar con pelotas y pasear por el parque. Necesita una familia que tenga energía para seguirle el paso. Es obediente, sabe sentarse y dar la pata. Ha sido entrenado básicamente y es muy apegado a su humano.",
+        foto: "perro5.avif"
+      },
+      Simba: {
+        nombre: "Simba",
+        edad: "1 año",
+        descripcion: "Simba es un pequeño gatito travieso, curioso y extremadamente cariñoso. Le encanta trepar, explorar y jugar con todo lo que se mueva. Ideal para hogares donde haya otros gatos o niños. Está vacunado, desparasitado y esterilizado.",
+        foto: "gato3.jpg"
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const nombre = params.get("nombre");
+    const mascota = animales[nombre];
+
+    if (mascota) {
+      const img = document.getElementById("animalFoto");
+
+      document.getElementById("animalNombre").textContent = mascota.nombre;
+      document.getElementById("animalEdad").textContent = mascota.edad;
+      document.getElementById("animalDescripcion").textContent = mascota.descripcion;
+      img.src = mascota.foto;
+    } else {
+      document.querySelector("main").innerHTML = `<div class='text-center mt-5'><h3>Animal no encontrado</h3><a href='index.html' class='btn btn-primary mt-3'>Volver</a></div>`;
+    }
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"))?.usuario;
+    if (usuario && mascota?.nombre) {
+      fetch(`http://localhost:8080/api/adopciones/estado/${usuario}`)
+        .then(res => res.json())
+        .then(data => {
+          const estado = data.find(m => m.nombre_animal === mascota.nombre)?.estado;
+          if (estado) {
+            const estadoSpan = document.getElementById("estadoAdopcion");
+            if (estado === "aprobada") {
+              estadoSpan.textContent = "Estado: Adoptado";
+              estadoSpan.classList.add("text-success");
+            } else if (estado === "pendiente") {
+              estadoSpan.textContent = "Estado: Solicitud en proceso";
+              estadoSpan.classList.add("text-warning");
+            } else {
+              estadoSpan.textContent = "Disponible para adopción";
+              estadoSpan.classList.add("text-primary");
+            }
+          }
+        });
+    }
+  </script>
+</body>
+</html>

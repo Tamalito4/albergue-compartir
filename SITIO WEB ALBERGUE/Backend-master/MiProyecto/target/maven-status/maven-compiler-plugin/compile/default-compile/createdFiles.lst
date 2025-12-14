@@ -1,0 +1,9 @@
+com\albergue\MiProyecto\controller\AdopcionController.class
+com\albergue\MiProyecto\controller\AnimalController.class
+com\albergue\MiProyecto\repository\AnimalRepository.class
+com\albergue\MiProyecto\repository\UsuarioRepository.class
+com\albergue\MiProyecto\MiProyectoApplication.class
+com\albergue\MiProyecto\model\Animal.class
+com\albergue\MiProyecto\controller\DonacionController.class
+com\albergue\MiProyecto\controller\UsuarioController.class
+com\albergue\MiProyecto\model\Usuario.class

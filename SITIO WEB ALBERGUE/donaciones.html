@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Donaciones | Huellitas Villa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+  body {
+    background: linear-gradient(135deg, #6fb1fc, #4364f7);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .container-donaciones {
+    background: white;
+    padding: 40px;
+    margin-top: 60px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    max-width: 1100px;
+  }
+
+  h3 {
+    color: #0d6efd;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    border-radius: 10px;
+  }
+
+  .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 10px;
+  }
+
+  #seccion-pago {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  .card img {
+    max-height: 100px;
+    object-fit: contain;
+    padding: 20px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .zoom-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .zoom-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+
+  .navbar-brand img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-brand img:hover {
+    transform: scale(1.1);
+  }
+
+  footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+  }
+
+  #mensaje-error,
+  #mensaje-registro {
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+</style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="huellitas.avif" alt="Huellitas Logo">
+      <span>Huellitas Villa</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="filtro.html">Filtrar Mascotas</a></li>
+        <li class="nav-item"><a class="nav-link" href="sobrenosotros.html">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactanos.html">Contáctanos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="donaciones.html">Donaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="usuario.html">Login</a></li>
+      </ul>
+<script>
+  const user = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  if (user) {
+    const nav = document.querySelector(".navbar-nav");
+    nav.innerHTML += `
+      <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+    `;
+    const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+    if (loginItem) loginItem.remove(); // Oculta el "Login"
+  }
+</script>
+
+    </div>
+  </div>
+</nav>
+
+<!-- Contenedor Principal -->
+<main class="container container-donaciones mt-5 mb-5">
+
+  <!-- LOGIN + REGISTRO -->
+  <div id="seccion-login-registro">
+    <div class="row g-4">
+      <!-- LOGIN -->
+      <div class="col-md-6">
+        <div class="p-4 bg-light rounded-3 shadow-sm h-100 zoom-card">
+          <h3 class="text-primary">Iniciar Sesión</h3>
+          <form id="formLogin">
+            <div class="mb-3">
+              <input type="text" class="form-control" id="loginUsuario" placeholder="Usuario" required>
+            </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" id="loginPass" placeholder="Contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+            <div id="mensaje-error" class="text-danger"></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- REGISTRO -->
+      <div class="col-md-6">
+        <div class="p-4 bg-white rounded-3 shadow-sm h-100 border-start border-3 border-primary zoom-card">
+          <h3 class="text-primary">Registro</h3>
+          <form id="formRegistro">
+            <input type="text" class="form-control mb-2" id="nombre" placeholder="Nombre Completo" required>
+            <input type="text" class="form-control mb-2" id="lugarNacimiento" placeholder="Lugar de Nacimiento" required>
+            <div class="row mb-2">
+              <div class="col-4"><input type="number" class="form-control" placeholder="Día" min="1" max="31" required></div>
+              <div class="col-4"><input type="number" class="form-control" placeholder="Mes" min="1" max="12" required></div>
+              <div class="col-4"><input type="number" class="form-control" placeholder="Año" min="1900" max="2025" required></div>
+            </div>
+            <input type="email" class="form-control mb-2" id="correo" placeholder="Correo Electrónico" required>
+            <input type="tel" class="form-control mb-2" id="telefono" placeholder="Teléfono" required>
+            <input type="text" class="form-control mb-2" id="usuarioNuevo" placeholder="Usuario" required>
+            <input type="password" class="form-control mb-2" id="passNuevo" placeholder="Contraseña" required>
+            <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+            <div id="mensaje-registro" class="text-success"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DONACIÓN -->
+  <div id="seccion-pago" class="mt-5">
+    <h3 class="text-center mb-4">Elige un medio para donar</h3>
+    <div class="row g-4 justify-content-center">
+  <div class="col-md-4">
+    <div id="pago-nequi" class="card text-center p-3 metodo-pago" data-metodo="Nequi" style="cursor:pointer">
+      <img src="nequi.png" alt="Nequi">
+      <h5 class="mt-3">Donar con Nequi</h5>
+      <p>Escanea el QR o usa el número 300 000 0000</p>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div id="pago-daviplata" class="card text-center p-3 metodo-pago" data-metodo="Daviplata" style="cursor:pointer">
+      <img src="daviplata.jpg" alt="Daviplata">
+      <h5 class="mt-3">Donar con Daviplata</h5>
+      <p>Escanea el código o usa 301 000 0000</p>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div id="pago-paypal" class="card text-center p-3 metodo-pago" data-metodo="Paypal" style="cursor:pointer">
+      <img src="paypal.png" alt="Paypal">
+      <h5 class="mt-3">Donar con Paypal</h5>
+      <p>Realiza tu donación internacional fácilmente</p>
+    </div>
+  </div>
+</div>
+
+  </div>
+<!-- FORMULARIO DONACIÓN -->
+<div id="form-donacion" class="mt-5" style="display: none;">
+  <h3 class="text-center mb-4">Registro de Donación</h3>
+  <form id="formDonacion" class="bg-light p-4 rounded shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Método de Pago</label>
+      <input type="text" class="form-control" id="metodo" readonly>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Monto a Donar</label>
+      <input type="number" class="form-control" id="monto" min="1" required>
+    </div>
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-secondary" onclick="regresarMetodo()">Regresar</button>
+      <button type="submit" class="btn btn-success">Aceptar</button>
+    </div>
+    <div id="mensaje-donacion" class="mt-3 text-center"></div>
+  </form>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-auto">
+  <p>&copy; 2025 Huellitas Villa | Todos los derechos reservados</p>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+  const formLogin = document.getElementById("formLogin");
+  const formRegistro = document.getElementById("formRegistro");
+  const seccionLoginRegistro = document.getElementById("seccion-login-registro");
+  const seccionPago = document.getElementById("seccion-pago");
+  const mensajeError = document.getElementById("mensaje-error");
+  const mensajeRegistro = document.getElementById("mensaje-registro");
+
+  function mostrarSeccionPago() {
+    seccionLoginRegistro.style.display = "none";
+    seccionPago.style.display = "block";
+  }
+
+  function ocultarSeccionPago() {
+    seccionPago.style.display = "none";
+    seccionLoginRegistro.style.display = "block";
+  }
+
+  // LOGIN
+  formLogin.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    mensajeError.textContent = "";
+
+    const usuario = document.getElementById("loginUsuario").value;
+    const contrasena = document.getElementById("loginPass").value;
+
+    try {
+      const res = await fetch("http://localhost:8080/api/usuarios/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, contrasena })
+      });
+
+      const result = await res.json();
+
+      if (result.status === "ok") {
+  // Guardar sesión
+  localStorage.setItem("usuarioLogueado", JSON.stringify({ 
+    usuario: usuario, 
+    rol: result.rol 
+  }));
+
+  mostrarSeccionPago();
+
+  // Mostrar mensaje inmediatamente en navbar
+  const nav = document.querySelector(".navbar-nav");
+  if (!document.getElementById("info-sesion")) {
+    const item = document.createElement("li");
+    item.className = "nav-item";
+    item.id = "info-sesion";
+    item.innerHTML = `
+      <span class="nav-link text-white">
+        Logueado como <strong>${usuario}</strong>
+        <button class="btn btn-sm btn-outline-light ms-2" onclick="cerrarSesion()">Cerrar sesión</button>
+      </span>
+    `;
+    nav.appendChild(item);
+
+    // Opcional: ocultar botón de login si sigue visible
+    const loginItem = nav.querySelector('a[href="usuario.html"]')?.parentElement;
+    if (loginItem) loginItem.remove();
+  }
+}
+
+ else {
+        ocultarSeccionPago();
+        mensajeError.textContent = result.message || "Credenciales incorrectas.";
+      }
+    } catch (err) {
+      ocultarSeccionPago();
+      mensajeError.textContent = "Error al conectar con el servidor.";
+    }
+  });
+
+  // REGISTRO
+  formRegistro.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    mensajeRegistro.textContent = "";
+
+    const nombreCompleto = document.getElementById("nombre").value;
+    const lugarNacimiento = document.getElementById("lugarNacimiento").value;
+    const dia = document.querySelector('input[placeholder="Día"]').value;
+    const mes = document.querySelector('input[placeholder="Mes"]').value;
+    const anio = document.querySelector('input[placeholder="Año"]').value;
+    const fechaNacimiento = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+    const correo = document.getElementById("correo").value;
+    const telefono = document.getElementById("telefono").value;
+    const usuario = document.getElementById("usuarioNuevo").value;
+    const contrasena = document.getElementById("passNuevo").value;
+
+    const data = {
+      nombreCompleto,
+      lugarNacimiento,
+      fechaNacimiento,
+      correo,
+      telefono,
+      usuario,
+      contrasena
+    };
+
+    try {
+      const res = await fetch("http://localhost:8080/api/usuarios/registro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.status === "ok") {
+        mensajeRegistro.style.color = "green";
+        mensajeRegistro.textContent = result.message;
+        mostrarSeccionPago();
+      } else {
+        mensajeRegistro.style.color = "red";
+        mensajeRegistro.textContent = result.message || "Error al registrar.";
+        ocultarSeccionPago();
+      }
+    } catch (err) {
+      mensajeRegistro.style.color = "red";
+      mensajeRegistro.textContent = "Error al conectar con el servidor.";
+      ocultarSeccionPago();
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Mostrar mensaje si hay sesión activa y saltar directo al pago
+  document.addEventListener("DOMContentLoaded", () => {
+    const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+    if (sesion && sesion.usuario) {
+      mostrarSeccionPago(); // Oculta formulario y muestra pago
+
+      const nav = document.querySelector(".navbar-nav");
+
+      // Evita duplicar el mensaje si ya está
+      if (!document.getElementById("info-sesion")) {
+        const item = document.createElement("li");
+        item.className = "nav-item";
+        item.id = "info-sesion";
+        item.innerHTML = `
+          <span class="nav-link text-white">
+            Logueado como <strong>${sesion.usuario}</strong>
+            <button class="btn btn-sm btn-outline-light ms-2" onclick="cerrarSesion()">Cerrar sesión</button>
+          </span>
+        `;
+        nav.appendChild(item);
+      }
+    }
+  });
+
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada");
+    window.location.href = "usuario.html";
+  }
+</script>
+<script>
+  function mostrarFormulario(metodo) {
+    document.getElementById("seccion-pago").style.display = "none";
+    document.getElementById("form-donacion").style.display = "block";
+    document.getElementById("metodo").value = metodo;
+  }
+
+  function regresarMetodo() {
+    document.getElementById("form-donacion").style.display = "none";
+    document.getElementById("seccion-pago").style.display = "block";
+    document.getElementById("formDonacion").reset();
+    document.getElementById("mensaje-donacion").textContent = "";
+  }
+
+  document.getElementById("formDonacion").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const sesion = JSON.parse(localStorage.getItem("usuarioLogueado"));
+  const usuario = sesion?.usuario;
+  const metodo = document.getElementById("metodo").value;
+  const monto = document.getElementById("monto").value;
+
+  if (!usuario) {
+    alert("Debes iniciar sesión para donar.");
+    return;
+  }
+
+  const confirmado = confirm(`¿Estás seguro de realizar una donación de $${monto} por ${metodo}?`);
+
+  if (!confirmado) return;
+
+  try {
+    const res = await fetch("http://localhost:8080/api/donaciones/registrar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuario, metodo_pago: metodo, monto })
+    });
+
+    const msg = await res.text();
+    document.getElementById("mensaje-donacion").textContent = msg;
+    document.getElementById("mensaje-donacion").style.color = "green";
+  } catch (err) {
+    document.getElementById("mensaje-donacion").textContent = "Error al registrar la donación.";
+    document.getElementById("mensaje-donacion").style.color = "red";
+  }
+});
+
+</script>
+<script>
+  // Agregar evento a cada tarjeta con clase "metodo-pago"
+  document.addEventListener("DOMContentLoaded", () => {
+    const tarjetas = document.querySelectorAll(".metodo-pago");
+    tarjetas.forEach(card => {
+      card.addEventListener("click", () => {
+        const metodo = card.getAttribute("data-metodo");
+        mostrarFormulario(metodo);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
